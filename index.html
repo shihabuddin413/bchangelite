@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bchange</title>
+  <style>
+    span{
+      font-size: 22px;
+      font-style: bold;
+    }
+    img{
+      width: 20px;
+      padding: 4px;
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid grey;
+      padding: 5px;
+      text-align: left;
+      border-bottom: 1px solid transparent;
+    }
+    .row span {
+      width: 80%;
+    }
+    
+    .row:last-child{
+      border-bottom: 1px solid grey; 
+    }
+    .row:first-child:hover{
+      background: transparent!important;
+      border:1px solid black;
+      border-bottom: 1px solid transparent;
+      color: black;
+    }
+    #changePercentage{
+      font-size: 15px;
+      align-self: right;
+    }
+    .greenText {
+      background: green!important;
+      color: white!important;
+      width: max-content;
+      text-align: center;
+      font-weight: bold;
+      padding: 5px ;
+      border-radius: 4px;
+    }
+    
+    .redText {
+      background: red!important;
+      color: white!important;
+      width: max-content;
+      text-align: center;
+      font-weight: bold;
+      padding: 5px ;
+      border-radius: 4px;
+    }
+    .pd{
+      font-size: 18px;
+    }
+    h3, h4{
+      padding: 2px;
+      margin: 0;
+      text-align: center;
+      width: 100%;
+    }
+    .cp{
+      width:200px!important;
+      text-align: center;
+      padding: 7px 5px;
+      border-radius: 4px;
+      background: #f4f4f4;
+      color: darkgrey;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    .row:hover {
+      background: #cfecff66;
+      border: 1px solid darkblue;
+      border-right: 1px solid black;
+      border-left: 1px solid black;
+      font-weight: bold;
+      color: darkblue;
+    }
+  </style>
+</head>
+<body id ="main">
+    <div class="row">
+      <h3>Coin </h3>
+      <h3>Price</h3>
+      <h4 id='changePercentage'> Last ROI <br/>(0sec)</h4>
+    </div>
+  
+    <script>
+      var mainDiv = document.getElementById('main')
+      var changePer = document.getElementById('changePercentage')
+    
+      var coins = {
+        btc : `https://api.coinbase.com/v2/prices/spot?currency=USD`,
+        eth : `https://api.coinbase.com/v2/prices/ETH-USD/spot`,
+        sol : `https://api.coinbase.com/v2/prices/SOL-USD/spot`,
+        matic : `https://api.coinbase.com/v2/prices/MATIC-USD/spot`,
+        sand : `https://api.coinbase.com/v2/prices/SAND-USD/spot`,
+        trb : `https://api.coinbase.com/v2/prices/TRB-USD/spot`,
+        bond : `https://api.coinbase.com/v2/prices/BOND-USD/spot`,
+        etc : `https://api.coinbase.com/v2/prices/ETC-USD/spot`,
+      }
+      
+      let AllCoinsName = ['APE',
+'ATOM',
+'REP',
+'SKL',
+'SOL',
+'STORJ',
+/*
+'MATH',
+'PRQ',
+'MASK',
+'HOPR',
+'POND',
+'BTC',
+*/
+'ENJ',
+/*
+'RAD',
+'METIS',
+'ARPA',
+'RARI',
+'XYO',
+'STG',
+'ALCX',
+'RAI',
+'TRU',
+'ANKR',
+*/
+//'MIR',
+'SAND',
+//'GODS',
+'LTC',
+/*
+'MPL',
+'JUP',
+'VGX',
+'ATA',
+*/
+'DASH',
+//'GST',
+'LRC',
+/*
+'NCT',
+'SHIB',
+'TIME',
+'UNFI',
+'WCFG',
+*/
+'YFI',
+//'GAL',
+//'DYP',
+'AVAX',
+//'CGLD',
+'NKN', /*
+'DREP',
+'API3', 
+'CLV', */
+// 'OMG',
+'USDC',
+'DOGE',
+'DOT',
+//'XRP',
+'CVC',
+'EOS',
+'LINK',
+// 'RLY',
+'BCH',
+'ETC',
+// 'AGLD',
+// 'FET',
+'GRT',
+'ZEN',
+'MTL',
+'KSM',
+// 'CELR',
+'GUSD',
+'BAND',
+//'MINA',
+//'FORTH',
+'UMA',
+/*
+'FLOW',
+'CTSI',
+'DIA',
+'ORCA',
+'SPELL',
+'LOKA',
+'CTX',
+*/
+'SNT',
+'1INCH',/*
+'AUCTION',
+'NU',
+'PERP',
+'RGT',
+'DEXT',
+'ALEPH',
+'ACH',
+'ASM',
+'ERN',
+'GALA',
+'OP', */
+'ICP',
+'MKR', /*
+'UPI',
+'DDX',
+'ALICE', */
+'BNT',
+// 'IMX',
+'LOOM',
+// 'TBTC',
+'UNI',
+'MONA',
+// 'KRL',
+'PAX',
+// 'RBN',
+'BAT',
+// 'NEST',
+'WBTC',
+//'XCN',
+//'QUICK',
+'XLM',
+'ZEC',
+//'AVT',
+'BOND',
+'FIL',
+'GMT',
+'REN', /*
+'GLM',
+'MEDIA',
+'FORT', */
+'ELA',
+'AST',
+// 'FX',
+'LPT',
+/*
+'PLA',
+'ROSE',
+'BIT',
+*/
+'ABT',
+// 'GYEN',
+// 'MUSD',
+'AMP',
+'DAI',
+'MANA',
+/*
+'INDEX',
+'TONE',
+'SWFTC',
+'INV',
+'MCO2',
+'BICO',
+'LQTY',
+'BUSD',
+'IDEX',
+'PRO',
+'RARE',
+'DESO',
+*/
+'POWR',
+/*
+'C98',
+'SUPER',
+'TRIBE',
+'FARM',
+*/
+'BLZ',
+/*
+'ORN',
+'UST',
+'BADGER',
+*/
+'MLN',
+'NMR',
+'REQ',
+'XTZ',
+// 'HIGH',
+'SUSHI',
+'USDT',
+//'MDT',
+//'SHPING',
+'KNC',
+/*
+'OGN',
+'MUSE',
+'COTI',
+'TRB',
+'YFII',
+'FIS',
+'WAMPL',
+'AERGO',
+*/
+//'LCX',
+'CRV',
+'QNT',
+'SNX',
+'AAVE',
+'GNO',
+'ADA',
+//'AIOZ',
+'CRPT',
+//'JASMY',
+//'PLU',
+'QSP',
+// 'BOBA',
+'ZRX',
+'COMP',
+//'MATIC',
+//'SYN',
+//'GTC',
+//'COVAL',
+'OXT',
+'BAL',
+//'BTRST',
+//'FOX',
+//'RNDR',
+'STX',
+'DNT',
+'CHZ',
+'IOTX',
+//'WLUNA',
+//'AXS',
+//'CRO',
+//'KEEP',
+//'FIDA',
+//'POLS',
+//'POLY',
+//'ENS',
+'ALGO',
+//'GFI',
+'RLC',
+/*
+'SYLO',
+'SUKU',
+'TRAC',
+'DAR',
+*/
+]
+
+     for (let  i of AllCoinsName){
+       let coinkey = i.toLowerCase()
+       coins[coinkey]=`https://api.coinbase.com/v2/prices/${i}-USD/spot`
+     }
+      
+      var domElCoins=[];
+      var lastPrice={};
+      var test=[];
+      var duration= 0;
+      var intervalTime = 10000;
+      
+      function updateDuration(t){
+        if (t>3600){ 
+          h = parseInt(t/3600)
+          t = t%3600
+          m = parseInt(t/60)
+          s = t%60
+          return `${h}h ${m}m ${s}s`
+        }
+        else if(t>60){ 
+          m = parseInt(t/60)
+          s = t % 60
+          return `${m}m ${s}s`
+        }
+        else if (t>0) { return `${t} sec` }
+        return '0 sec'
+      }
+      
+      function getChange(lP,cP){
+        console.log('Called '+lP+' '+ cP)
+        lP = Number(lP)
+        cP = Number(cP)
+        if (lP === cP) {
+          return 0;
+        }
+        d=(cP-lP)/lP
+        console.log('ch --> ' + d)
+        return (d*100).toFixed(2)
+      }
+      
+      
+      function addCoinSpotDetailsRow(url, coinName){
+        let coinsDetails = document.createElement('div')
+        coinsDetails.classList.add('row')
+        let logoUrl = `./black/${coinName.toLowerCase()}.svg`
+        let logoDis = document.createElement('span')
+        logoDis.style.width= 'max-content';
+        let imgDis = document.createElement('img')
+        imgDis.setAttribute('src', logoUrl)
+        logoDis.insertAdjacentElement('beforeend',imgDis)
+        let pairDis = document.createElement('span')
+        pairDis.classList.add('pd')
+        let priceDis = document.createElement('span')
+        let changeDis = document.createElement('span')
+        priceDis.setAttribute('id',coinName)
+        changeDis.setAttribute('id',coinName+'cp')
+        changeDis.classList.add('cp')
+        obj={ 
+          domId : coinName,
+          priceUrl : url,
+        }
+        domElCoins.push(obj)
+        getSpotPrice(url).then((r)=>{
+          data = r.data
+          key = coinName
+          lastPrice[key]=data['amount']
+          pairText = data['base'] + '/' + data['currency'] +' '
+          priceText =Number(data['amount'])
+          pairDis.textContent=pairText
+          priceDis.textContent=priceText
+          changeDis.textContent=0+'%';
+        })
+        
+        coinsDetails.insertAdjacentElement('beforeend', logoDis)
+        coinsDetails.insertAdjacentElement('beforeend', pairDis)
+        coinsDetails.insertAdjacentElement('beforeend', priceDis)
+        coinsDetails.insertAdjacentElement('beforeend', changeDis)
+        mainDiv.insertAdjacentElement('beforeend', coinsDetails)
+
+        let price= document.createElement('span')
+      }
+ 
+      async function getSpotPrice(url) {
+          const response = await fetch(url);
+          const res = await response.json();
+          return res
+      }
+      
+      function addAllSpotCoins(coinsUrls){
+          for (let coin in coinsUrls) {
+          //console.log(coin, coinsUrls[coin])
+             addCoinSpotDetailsRow(coinsUrls[coin], coin)
+          }
+      }
+      
+      function updatePrice(){
+        domElCoins.forEach((coin)=>{
+           let domId = coin.domId
+           let url = coin.priceUrl
+           getSpotPrice(url).then((r)=>{
+             el=document.getElementById(domId)
+             cpEl = document.getElementById(domId+'cp')
+             data=r.data
+             cprice=data['amount']
+             cp=getChange(lastPrice[domId], cprice)
+             el.textContent=cprice
+             if (cp>0){
+              cpEl.textContent='+'+cp+'%'
+              cpEl.classList.remove('redText')
+              cpEl.classList.add('greenText')
+             }
+             if (cp<0){
+               cpEl.textContent=cp+'%'
+               cpEl.classList.add('redText')
+               cpEl.classList.remove('greenText')
+             }
+             console.log(`Updateing ...${domId}
+              price ...${data['amount']}`)
+          })
+        })
+        duration+=(intervalTime/1000)
+        changePer.innerHTML=`Last ROI <br/>(${updateDuration(duration)})`
+      }
+      
+ 
+     addAllSpotCoins(coins);
+     console.log(domElCoins)
+     console.log(lastPrice)
+     
+     setInterval(()=>{
+       updatePrice();
+     }, intervalTime) 
+    
+      
+      </script>
+    
+</body>
+</html>
