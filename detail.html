@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bchange Lite - Asset Detail & AI Forecast</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons & CSS -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">B</div>
+        <div class="brand-title">Bchange <span>v2.0 Lite</span></div>
+      </a>
+
+      <div class="header-actions">
+        <a href="index.html" class="btn-back">← Back to Overview</a>
+        <div class="live-status-pill">
+          <span class="pulse-dot"></span>
+          <span id="roiDuration">ROI Tracked (0 sec)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Detail View Body -->
+  <main class="main-content" style="margin-top: 24px; max-width: 1200px;">
+    
+    <!-- Asset Hero Header -->
+    <div class="detail-hero-card">
+      <div class="detail-hero-header">
+        <div class="asset-info" style="gap: 14px;">
+          <img id="detailLogo" class="asset-logo-lg" src="./favicon-32x32.png" alt="Coin Logo" />
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h1 id="detailSymbol" class="detail-title">Asset Name</h1>
+              <span id="detailCategoryBadge" class="asset-tag-pill">CATEGORY</span>
+            </div>
+            <p id="detailDescription" class="detail-subtitle">Loading asset information...</p>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <div id="detailPrice" class="detail-price-main">$0.00</div>
+          <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+            <span id="detailROI" class="roi-badge positive">+0.00%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Container Section -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <h3 class="chart-card-title">Live Price Trajectory</h3>
+          <p class="chart-card-subtitle">Real-time Coinbase spot tick stream</p>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-dot"></span> Real-time Price Line
+        </div>
+      </div>
+
+      <div class="chart-container-boxed">
+        <canvas id="detailChartCanvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="detail-stats-grid" style="margin-bottom: 32px;">
+      <div class="stat-box">
+        <div class="stat-label">Asset Category</div>
+        <div class="stat-value" id="statCategory">LAYER 1</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Session Baseline</div>
+        <div class="stat-value" id="statInitial">$0.00</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Session Low</div>
+        <div class="stat-value" id="statLow">$0.00</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Session High</div>
+        <div class="stat-value" id="statHigh">$0.00</div>
+      </div>
+    </div>
+
+    <!-- Embedded Realtime AI Research & 6-Month Forecast Container -->
+    <div id="aiResearchContainer" class="ai-embedded-card">
+      <!-- Rendered dynamically by detail.js & ai-research.js -->
+    </div>
+
+  </main>
+
+  <!-- Modular Scripts -->
+  <script src="./categories.js"></script>
+  <script src="./chart.js"></script>
+  <script src="./ai-research.js"></script>
+  <script src="./detail.js"></script>
+</body>
+</html>
